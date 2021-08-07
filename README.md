@@ -1,5 +1,7 @@
 # Script Popup Choices for 0 A.D.
 
+![Example](https://github.com/Mare-Nostrum-0AD/popup_choices/blob/main/.github/preview.png?raw=true)
+
 This little mod allows you to create popup choices in scenario scripts. Each popup choice menu can have up to three buttons, with each one optionally triggering a script function.
 
 Popup choices are called via the GuiInterface component, with the function "PushPopupRequest". PushPopupRequest takes a single argument, consisting of the following fields:
