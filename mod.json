@@ -1,0 +1,8 @@
+{
+	"name": "popup_choices",
+	"version": "0.25.01",
+	"label": "Script Popup Choices",
+	"url": "https://github.com/Mare-Nostrum-0AD/popup_choices",
+	"description": "Creates an interface for creating popup choices in scenario scripts, with each button triggering a different function.",
+	"dependencies": ["0ad=0.0.25"]
+}
