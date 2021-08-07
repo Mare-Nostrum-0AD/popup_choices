@@ -1,7 +1,10 @@
 const scenarioVictoryTimeMinutes = 90;
 
-const scenarioIntro = 
+const scenarioIntroAthen = 
 `The Carthaginians are invading your colony. Defeat them or survive for ${scenarioVictoryTimeMinutes} minutes in order to win.`;
+
+const scenarioIntroCart = 
+`You have found a Greek colony infringing on your territory. Defeat them within ${scenarioVictoryTimeMinutes} minutes in order to win.`;
 
 const scenarioBriefing = 
 `The Sicilian Wars, or Greco-Punic Wars, were a series of conflicts fought
@@ -28,7 +31,9 @@ No Carthaginian records of the war exist today because when the city was
 destroyed in 146 BC by the Romans, the books from Carthage's library were
 distributed among the nearby African tribes. None remain on the topic of
 Carthaginian history. As a result, most of what we know about the Sicilian Wars
-comes from Greek historians.`;
+comes from Greek historians.
+
+Source: https://en.wikipedia.org/wiki/Sicilian_Wars`;
 
 Trigger.prototype.DisplayScenarioBriefing = function(playerID)
 {
@@ -45,27 +50,24 @@ Trigger.prototype.DisplayScenarioBriefing = function(playerID)
 Trigger.prototype.DisplayScenarioIntro = function()
 {
 	const cmpGuiInterface = Engine.QueryInterface(SYSTEM_ENTITY, IID_GuiInterface);
-	const cmpPlayerManager = Engine.QueryInterface(SYSTEM_ENTITY, IID_PlayerManager);
-	const humanPlayers = cmpPlayerManager.GetNonGaiaPlayers().filter(id => !QueryPlayerIDInterface(id).IsAI());
-	for (const playerID of humanPlayers)
-	{
-		cmpGuiInterface.PushPopupRequest({
-			"players":		[playerID],
-			"title": 		"Introduction",
-			"text":			scenarioIntro,
-			"width":		500,
-			"height":		200,
-			"choices":		[
-				["Ok", null],
-				["Read More", {
-					"entities":	[SYSTEM_ENTITY],
-					"iid":		IID_Trigger,
-					"func":		"DisplayScenarioBriefing",
-					"args":		[playerID]
-				}]
-			]
-		});
-	}
+	const getPopupSettings = (playerID, text) => ({
+		"players":		[playerID],
+		"title": 		"Introduction",
+		"text":			text,
+		"width":		500,
+		"height":		200,
+		"choices":		[
+			["Ok", null],
+			["Read More", {
+				"entities":	[SYSTEM_ENTITY],
+				"iid":		IID_Trigger,
+				"func":		"DisplayScenarioBriefing",
+				"args":		[playerID]
+			}]
+		]
+	});
+	cmpGuiInterface.PushPopupRequest(getPopupSettings(1, scenarioIntroAthen));
+	cmpGuiInterface.PushPopupRequest(getPopupSettings(2, scenarioIntroCart));
 };
 
 Trigger.prototype.ChoiceFreeUnits = function(playerID, unitClasses)
@@ -111,7 +113,7 @@ Trigger.prototype.RequestChoiceFreeUnits = function()
 Trigger.prototype.SetupScenario = function()
 {
 	const cmpTimer = Engine.QueryInterface(SYSTEM_ENTITY, IID_Timer);
-	cmpTimer.SetTimeout(SYSTEM_ENTITY, IID_Trigger, "RequestChoiceFreeUnits", 2000);
+	cmpTimer.SetTimeout(SYSTEM_ENTITY, IID_Trigger, "RequestChoiceFreeUnits", 500);
 };
 
 {
